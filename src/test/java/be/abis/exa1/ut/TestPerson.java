@@ -9,6 +9,9 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 public class TestPerson {
 
     @Test
@@ -18,5 +21,15 @@ public class TestPerson {
 
         Integer result = p1.calculateAge();
         assertEquals (expected, result);
+    }
+
+    @Test
+    public void toStringSentenceStartsWithPerson () {
+
+        Person p1 = new Person(1,"Ann","Smits", LocalDate.of(1978, 6, 28));
+        String p1ToString = p1.toString();
+
+        assertThat(p1ToString,startsWith("Person"));
+
     }
 }
