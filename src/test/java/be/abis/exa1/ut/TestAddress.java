@@ -2,13 +2,16 @@ package be.abis.exa1.ut;
 
 import be.abis.exa1.model.Address;
 import be.abis.exa1.model.Person;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
@@ -18,11 +21,16 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class TestAddress {
 
+    Address a;
+    @Before
+    public void setUp(){
+        a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgium","BE");
+    }
+
     @Test
     public void belgianZipCodeShouldBeNumeric () {
         // arrange
         boolean expected = true;
-        Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgian","01");
 
         // act
         boolean result = a.checkBelgianZipCoded();
@@ -32,41 +40,27 @@ public class TestAddress {
     }
 
     @Test
-    public void addressShouldBeAppendInAFile ()  {
-        // arrange
-        String fileName = "addressInfo.txt";
-
-        Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgian","01");
-        a.appendInFile(fileName);
-
-        Address a1 = new Address("rue tabaga","32 bus 4B","3000","Leuven","Belgian","01");
-        a1.appendInFile(fileName);
-
-
-        String allLine = readInFile(fileName);
-        System.out.println(allLine);
-
-
-        assertThat(allLine,containsString("Address{street='"+a1.getStreet()));
-
+    public void appendingAddressToFileShouldReturnExtraLineInFile() throws IOException {
+        Path path = Address.getFilePath();
+        int countBeforeWrite=0;
+        if (Files.exists(path)) {
+            path.toFile().setWritable(true);
+            countBeforeWrite = Files.readAllLines(path).size();
+        }
+        a.writeToFile();
+        int countAfterWrite = Files.readAllLines(path).size();
+        int linesAdded=countAfterWrite - countBeforeWrite;
+        assertEquals(1,linesAdded);
     }
 
-
-
-    public String readInFile (String fileName){
-        String allLine = "";
-        String nextLine;
-
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName));){
-            while ((nextLine = br.readLine()) != null) {
-                allLine +=nextLine;
-            }
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    @Test(expected= IOException.class)
+    public void appendingAddressToExistingReadOnlyFileShouldThrowIOException() throws IOException {
+        Path path = Address.getFilePath();
+        File file = path.toFile();
+        if (!Files.exists(path)) {
+            file.createNewFile();
         }
-
-        return allLine;
+        file.setReadOnly();
+        a.writeToFile();
     }
 }

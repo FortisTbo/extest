@@ -2,12 +2,10 @@ package be.abis.exa1.model;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 
 public class Address {
+    private final static Path filePath= Paths.get("addresses.txt");
     private String street;
     private String nr;
     private String zipCode;
@@ -22,6 +20,10 @@ public class Address {
         this.town = town;
         this.country = country;
         this.countryCode = countryCode;
+    }
+
+    public static Path getFilePath() {
+        return filePath;
     }
 
     public String getStreet() {
@@ -95,14 +97,10 @@ public class Address {
                 '}';
     }
 
-    public void appendInFile(String fileName)  {
-        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND);){
-            bw.append(this.toString() + "\n");
-
-        } catch (IOException e) {
-
-        }
+    public void writeToFile() throws IOException {
+        BufferedWriter bw = Files.newBufferedWriter(filePath, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        bw.write(this+"\n");
+        bw.close();
     }
-
 
 }
