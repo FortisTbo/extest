@@ -35,28 +35,38 @@ public class TestAddress {
     public void addressShouldBeAppendInAFile ()  {
         // arrange
         String fileName = "addressInfo.txt";
+
         Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgian","01");
-
-
         a.appendInFile(fileName);
 
-        assertThat(readInFile(fileName),startsWith("Address{street='"+a.getStreet()));
+        Address a1 = new Address("rue tabaga","32 bus 4B","3000","Leuven","Belgian","01");
+        a1.appendInFile(fileName);
+
+
+        String allLine = readInFile(fileName);
+        System.out.println(allLine);
+
+
+        assertThat(allLine,containsString("Address{street='"+a1.getStreet()));
 
     }
 
 
 
     public String readInFile (String fileName){
-        String line = null;
+        String allLine = "";
+        String nextLine;
 
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName));){
-            line = br.readLine();
+            while ((nextLine = br.readLine()) != null) {
+                allLine +=nextLine;
+            }
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return line;
+        return allLine;
     }
 }

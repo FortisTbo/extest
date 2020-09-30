@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class Address {
     private String street;
@@ -95,8 +96,8 @@ public class Address {
     }
 
     public void appendInFile(String fileName)  {
-        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName));){
-            bw.write(this.toString() + "\n");
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND);){
+            bw.append(this.toString() + "\n");
 
         } catch (IOException e) {
 
