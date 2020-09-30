@@ -1,5 +1,11 @@
 package be.abis.exa1.model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Address {
     private String street;
     private String nr;
@@ -75,4 +81,27 @@ public class Address {
 
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", nr='" + nr + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", town='" + town + '\'' +
+                ", country='" + country + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                '}';
+    }
+
+    public void appendInFile(String fileName)  {
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileName));){
+            bw.write(this.toString() + "\n");
+
+        } catch (IOException e) {
+
+        }
+    }
+
+
 }

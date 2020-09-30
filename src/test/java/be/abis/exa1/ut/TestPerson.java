@@ -1,5 +1,6 @@
 package be.abis.exa1.ut;
 
+import be.abis.exa1.exception.MinorException;
 import be.abis.exa1.model.Person;
 import org.junit.Assert;
 import org.junit.*;
@@ -39,7 +40,7 @@ public class TestPerson {
 
     }
 
-    @Test(expected=Exception.class)
+    @Test(expected= MinorException.class)
     public void personShouldBeAdultException () throws Exception {
         p1.setBirthDay(LocalDate.of(2010, 6, 28));
 
