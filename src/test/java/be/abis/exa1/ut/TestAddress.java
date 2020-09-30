@@ -12,13 +12,14 @@ public class TestAddress {
 
     @Test
     public void belgianZipCodeShouldBeNumeric () {
+        // arrange
+        boolean expected = true;
+        Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgian","01");
 
-        Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgian","BE");
+        // act
+        boolean result = a.checkBelgianZipCoded();
 
-        Integer expected = 42;
-        Person p1 = new Person(1,"Ann","Smits", LocalDate.of(1978, 6, 28));
-
-        Integer result = p1.calculateAge();
+        // assert
         assertEquals (expected, result);
     }
 }

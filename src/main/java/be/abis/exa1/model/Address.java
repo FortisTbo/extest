@@ -66,8 +66,13 @@ public class Address {
     }
 
 
+    public boolean checkBelgianZipCoded() {
+        try {
+            Integer.parseInt(this.countryCode);
+        } catch (NumberFormatException e){
+            return false;
+        }
 
-
-
-
+        return true;
+    }
 }
