@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class TestCalculateAge {
 
     @Test
-    public void ageOfPersonFromBirthDateShouldBe42 () {
+    public void ageOfPersonFromBirthDateShouldBe42 () throws Exception {
         Person p1 = new Person(1,"Ann","Smits", LocalDate.of(1978, 6, 28));
 
         Integer result = p1.calculateAge();

@@ -23,7 +23,7 @@ public class TestPerson {
 
 
     @Test
-    public void ageOfPersonFromBirthDateShouldBe42 () {
+    public void ageOfPersonFromBirthDateShouldBe42 () throws Exception {
         Integer expected = 42;
 
         Integer result = p1.calculateAge();
@@ -36,6 +36,16 @@ public class TestPerson {
         String p1ToString = p1.toString();
 
         assertThat(p1ToString,startsWith("Person"));
+
+    }
+
+    @Test(expected=Exception.class)
+    public void personShouldBeAdultException () throws Exception {
+        p1.setBirthDay(LocalDate.of(2010, 6, 28));
+
+        Integer result = p1.calculateAge();
+
+
 
     }
 }
