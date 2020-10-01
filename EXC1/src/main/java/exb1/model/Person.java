@@ -11,6 +11,9 @@ public class Person {
     private String lastName;
     private LocalDate birthDay;
     private Company company;
+
+
+
     private double grossSalary;
 
     public Person(int personNumber, String firstName, String lastName, LocalDate birthDay, double grossSalary) {
@@ -64,6 +67,14 @@ public class Person {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public double getGrossSalary() {
+        return grossSalary;
+    }
+
+    public void setGrossSalary(double grossSalary) {
+        this.grossSalary = grossSalary;
     }
 
     @Override
