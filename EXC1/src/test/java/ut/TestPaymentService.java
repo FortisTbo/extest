@@ -1,10 +1,8 @@
 package ut;
 
 import exb1.exception.SalaryTooLowException;
-import exb1.model.AbisPaymentService;
-import exb1.model.Company;
-import exb1.model.PaymentService;
-import exb1.model.Person;
+import exb1.model.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,30 +16,29 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestPaymentService {
+
+    PaymentService paymentService;
+
     @Mock
     Person pMock;
-    @Mock
-    Company cMock;
+
+    @Before
+    public void setUp() {
+        paymentService = new AbisPaymentService();
+    }
 
     @Test
     public void shouldPrintMessage() throws SalaryTooLowException {
-        when(pMock.getGrossSalary()).thenReturn(1500.0);
-        when(pMock.getFirstName()).thenReturn("John");
+        when(pMock.calculateNetSalary()).thenReturn(15000.0);
+        when(pMock.getFirstName()).thenReturn("John1");
 
-        when(cMock.calculateTaxToPay()).thenReturn(51.0);
-
-        PaymentService paymentService = new AbisPaymentService();
         paymentService.paySalary(pMock);
     }
 
     @Test(expected= SalaryTooLowException.class)
     public void shouldHaveASalaryTooLowException() throws SalaryTooLowException {
-        when(pMock.getGrossSalary()).thenReturn(0.0);
-        when(pMock.getFirstName()).thenReturn("John");
+        when(pMock.calculateNetSalary()).thenThrow(SalaryTooLowException.class);
 
-        when(cMock.calculateTaxToPay()).thenReturn(51.0);
-
-        PaymentService paymentService = new AbisPaymentService();
         paymentService.paySalary(pMock);
     }
 }
