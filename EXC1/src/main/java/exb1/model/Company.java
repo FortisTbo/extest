@@ -40,7 +40,6 @@ public class Company {
                 taxToPay = 35.0;
         }
 
-        System.out.println("Country : " + getAddress().getCountryCode() + " taxToPay " + taxToPay);
         return taxToPay;
     }
 

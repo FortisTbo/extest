@@ -1,6 +1,7 @@
 package exb1.model;
 
 import exb1.exception.MinorException;
+import exb1.exception.SalaryTooLowException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -104,8 +105,12 @@ public class Person {
         return age;
     }
 
-    public double calculateNetSalary () {
-        double netSalary = grossSalary - (grossSalary * company.calculateTaxToPay()) / 100.0;
+    public double calculateNetSalary () throws SalaryTooLowException {
+        double netSalary = getGrossSalary() - (getGrossSalary() * company.calculateTaxToPay()) / 100.0;
+
+        if  (netSalary <  1500.0) {
+            throw new SalaryTooLowException();
+        }
 
         return netSalary;
     }

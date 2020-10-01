@@ -1,10 +1,12 @@
 package ut;
 
 import exb1.exception.MinorException;
+import exb1.exception.SalaryTooLowException;
 import exb1.model.Address;
 import exb1.model.Company;
 import exb1.model.Person;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -27,16 +29,16 @@ import org.mockito.stubbing.OngoingStubbing;
 @RunWith(MockitoJUnitRunner.class)
 public class TestPerson {
     Person p;
-    Address a;
+
 
     @Mock
-    Company c;
+    Company cMock;
 
     @Before
     public void setUp() {
 
-        a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgiam","NL");
-        //c = new Company("ABIS",a);
+        Address a = new Address("Diestsevest","32 bus 4B","3000","Leuven","Belgiam","NL");
+        Company c = new Company("ABIS",a);
 
         p = new Person(1,"Ann","Smits", LocalDate.of(1978, 6, 28), 4500.0, c);
 
@@ -70,16 +72,25 @@ public class TestPerson {
     }
 
     @Test
-    public void calculateNetSalaryOfBelgianPersonUsingMockCompany() {
-        when(c.calculateTaxToPay()).thenReturn(51.0);
+    public void calculateNetSalaryOfBelgianPersonUsingMockCompany() throws SalaryTooLowException {
+        Person p1 = new Person(1,"Ann","Smits", LocalDate.of(1978, 6, 28), 4500.0, cMock);
+
+        when(cMock.calculateTaxToPay()).thenReturn(51.0);
 
         Double expected = 2205.0;
-        Double result = p.calculateNetSalary();
+        Double result = p1.calculateNetSalary();
 
         assertEquals (expected, result);
 
 
-        verify(c).calculateTaxToPay();
+        verify(cMock).calculateTaxToPay();
 
     }
+
+    @Test(expected= SalaryTooLowException.class)
+    public void calculateNetSalary () throws SalaryTooLowException {
+        p.setGrossSalary(0.0);
+        Double result = p.calculateNetSalary();
+    }
+
 }
