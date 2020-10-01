@@ -22,6 +22,7 @@ public class TestAddress {
     }
 
     @Test
+    @Ignore
     public void belgianZipCodeShouldBeNumeric () {
         // arrange
         boolean expected = true;
